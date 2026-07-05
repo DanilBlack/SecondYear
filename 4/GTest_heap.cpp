@@ -1,0 +1,45 @@
+#include <gtest/gtest.h>
+#include <vector>
+
+// ==================== ТЕСТЫ ДЛЯ std::make_heap ====================
+class MakeHeapTest : public ::testing::Test {
+protected:
+    void SetUp() override {}
+    void TearDown() override {}
+};
+
+TEST_F(MakeHeapTest, MakeHeapCreatesHeapFromVector) {
+    std::vector<int> v = {10, 20, 5, 30, 15};
+    
+    std::make_heap(v.begin(), v.end());
+    
+    EXPECT_EQ(v.front(), 30); // Максимальный элемент
+    
+    std::pop_heap(v.begin(), v.end());
+    int max = v.back();
+    v.pop_back();
+    EXPECT_EQ(max, 30);
+    
+    std::pop_heap(v.begin(), v.end());
+    max = v.back();
+    v.pop_back();
+    EXPECT_EQ(max, 20);
+}
+
+TEST_F(MakeHeapTest, PushHeapAddsElement) {
+    std::vector<int> v = {10, 20, 5};
+    std::make_heap(v.begin(), v.end());
+    
+    v.push_back(30);
+    std::push_heap(v.begin(), v.end());
+    
+    EXPECT_EQ(v.front(), 30);
+}
+
+TEST_F(MakeHeapTest, MinHeapWithMakeHeap) {
+    std::vector<int> v = {10, 20, 5, 30, 15};
+    
+    std::make_heap(v.begin(), v.end(), std::greater<int>());
+    
+    EXPECT_EQ(v.front(), 5); // Минимальный элемент
+}
